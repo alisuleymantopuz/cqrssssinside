@@ -4,4 +4,17 @@
     <TargetFramework>netcoreapp2.2</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="Utils\" />
+    <Folder Include="Controllers\" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
+    <PackageReference Include="CSharpFunctionalExtensions" Version="1.14.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\cqrssssinside.domain\cqrssssinside.domain.csproj" />
+    <ProjectReference Include="..\cqrssssinside.domain.appServices\cqrssssinside.domain.appServices.csproj" />
+  </ItemGroup>
 </Project>

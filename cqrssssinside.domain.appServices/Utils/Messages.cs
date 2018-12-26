@@ -1,7 +1,7 @@
 ﻿using System;
 using CSharpFunctionalExtensions;
 
-namespace cqrssssinside.domain.Utils
+namespace cqrssssinside.domain.appServices.Utils
 {
     public sealed class Messages
     {

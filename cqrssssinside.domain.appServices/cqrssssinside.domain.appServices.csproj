@@ -4,4 +4,17 @@
     <TargetFramework>netcoreapp2.2</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="Class1.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Employees\" />
+    <Folder Include="Departments\" />
+    <Folder Include="Utils\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\cqrssssinside.domain\cqrssssinside.domain.csproj" />
+    <ProjectReference Include="..\cqrssssinside.domain.infrastructure\cqrssssinside.domain.infrastructure.csproj" />
+    <ProjectReference Include="..\cqrssssinside.domain.dto\cqrssssinside.domain.dto.csproj" />
+  </ItemGroup>
 </Project>

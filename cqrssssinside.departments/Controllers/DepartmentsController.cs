@@ -1,45 +1,54 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using cqrssssinside.departments.Models;
+using cqrssssinside.domain.appServices.Departments;
+using cqrssssinside.domain.appServices.Utils;
+using cqrssssinside.domain.dto;
+using cqrssssinside.web.common.Controllers;
 using Microsoft.AspNetCore.Mvc;
 
 namespace cqrssssinside.departments.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ValuesController : ControllerBase
+    public class DepartmentsController : BaseController
     {
-        // GET api/values
-        [HttpGet]
-        public ActionResult<IEnumerable<string>> Get()
+        private readonly Messages _messages;
+
+        public DepartmentsController(Messages messages)
         {
-            return new string[] { "value1", "value2" };
+            _messages = messages;
         }
 
-        // GET api/values/5
-        [HttpGet("{id}")]
-        public ActionResult<string> Get(int id)
+        // GET api/values
+        [HttpGet]
+        [Route("GetDepartments")]
+        public IActionResult GetDepartments()
         {
-            return "value";
+            List<DepartmentInfo> list = _messages.Dispatch(new GetDepartmentsQuery());
+
+            return Ok(list);
         }
 
         // POST api/values
-        [HttpPost]
-        public void Post([FromBody] string value)
+        [HttpPost("Register")]
+        public IActionResult Register([FromBody]RegisterDepartmentModel registerDepartmentModel)
         {
-        }
+            var registerDepartmentCommand = new RegisterDepartmentCommand(registerDepartmentModel.Name, registerDepartmentModel.Description);
 
-        // PUT api/values/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
+            var result = this._messages.Dispatch(registerDepartmentCommand);
+
+            return FromResult(result);
         }
 
         // DELETE api/values/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        [HttpDelete("Unregister/{id}")]
+        public IActionResult Unregister(long id)
         {
+            var unregisterDepartmentCommand = new UnregisterDepartmentCommand(id);
+
+            var result = this._messages.Dispatch(unregisterDepartmentCommand);
+
+            return FromResult(result);
         }
     }
 }

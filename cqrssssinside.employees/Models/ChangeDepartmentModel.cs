@@ -6,5 +6,8 @@ namespace cqrssssinside.employees.Models
         public ChangeDepartmentModel()
         {
         }
+
+        public long EmployeeId { get; set; }
+        public long NewDepartmentId { get; set; }
     }
 }

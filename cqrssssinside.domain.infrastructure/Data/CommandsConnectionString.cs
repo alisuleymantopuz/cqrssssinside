@@ -1,5 +1,4 @@
-﻿using System;
-namespace cqrssssinside.domain.infrastructure.Data
+﻿namespace cqrssssinside.domain.infrastructure.Data
 {
     public class CommandsConnectionString
     {

@@ -5,14 +5,14 @@ using CSharpFunctionalExtensions;
 
 namespace cqrssssinside.domain.appServices.Employees
 {
-    public class RegisterCommand:ICommand
+    public class RegisterEmployeeCommand : ICommand
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Address { get; set; }
         public object EmployeeId { get; internal set; }
 
-        public RegisterCommand(string firstname, string lastname, string address)
+        public RegisterEmployeeCommand(string firstname, string lastname, string address)
         {
             this.FirstName = firstname;
             this.LastName = lastname;
@@ -20,16 +20,16 @@ namespace cqrssssinside.domain.appServices.Employees
         }
     }
 
-    public sealed class RegisterCommandHandler : ICommandHandler<RegisterCommand>
+    public sealed class RegisterEmployeeCommandHandler : ICommandHandler<RegisterEmployeeCommand>
     {
         private readonly StoreDBContext _storeDbContext;
 
-        public RegisterCommandHandler(StoreDBContext storeDBContext)
+        public RegisterEmployeeCommandHandler(StoreDBContext storeDBContext)
         {
             this._storeDbContext = storeDBContext;
         }
 
-        public Result Handle(RegisterCommand command)
+        public Result Handle(RegisterEmployeeCommand command)
         {
             this._storeDbContext.Employees.Add(new Employee { 
                 FirstName=command.FirstName, 

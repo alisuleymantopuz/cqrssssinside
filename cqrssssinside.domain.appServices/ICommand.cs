@@ -1,6 +1,6 @@
 ﻿using CSharpFunctionalExtensions;
 
-namespace cqrssssinside.domain
+namespace cqrssssinside.domain.appServices
 {
     public interface ICommand
     {

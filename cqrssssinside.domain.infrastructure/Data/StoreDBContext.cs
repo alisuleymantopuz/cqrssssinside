@@ -16,7 +16,7 @@ namespace cqrssssinside.domain.infrastructure.Data
 
         public DbSet<Employee> Employees { get; set; }
 
-        public DbSet<Department> Store { get; set; }
+        public DbSet<Department> Departments { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace cqrssssinside.web.Utils
+namespace cqrssssinside.web.common.Utils
 {
     public class Envelope<T>
     {

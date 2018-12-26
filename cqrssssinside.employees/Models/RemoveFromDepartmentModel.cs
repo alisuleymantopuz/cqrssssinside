@@ -1,13 +1,11 @@
 ﻿using System;
 namespace cqrssssinside.employees.Models
 {
-    public class RegisterEmployeeModel
+    public class RemoveFromDepartmentModel
     {
-        public RegisterEmployeeModel()
+        public RemoveFromDepartmentModel()
         {
         }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public string Address { get; set; }
+        public long EmployeeId { get; set; }
     }
 }

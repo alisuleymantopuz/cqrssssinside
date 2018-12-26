@@ -1,10 +1,10 @@
-﻿using cqrssssinside.web.Utils;
+﻿using cqrssssinside.web.common.Utils;
 using CSharpFunctionalExtensions;
 using Microsoft.AspNetCore.Mvc;
 
-namespace cqrssssinside.web.Controllers
+namespace cqrssssinside.web.common.Controllers
 {
-    public class BaseController : Controller
+    public class BaseController : ControllerBase
     {
         protected new IActionResult Ok()
         {

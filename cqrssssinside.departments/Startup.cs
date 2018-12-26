@@ -1,15 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using cqrssssinside.domain.appServices;
+using cqrssssinside.domain.appServices.Utils;
+using cqrssssinside.domain.infrastructure.Data;
+using cqrssssinside.web.common.Utils;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace cqrssssinside.departments
 {
@@ -25,23 +24,46 @@ namespace cqrssssinside.departments
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+            var config = new Config(Configuration.GetValue<int>("NumberOfDatabaseRetries"));
+            services.AddSingleton(config);
+
+            var commandsConnectionString = new CommandsConnectionString(Configuration["ConnectionString"]);
+            var queriesConnectionString = new QueriesConnectionString(Configuration["QueriesConnectionString"]);
+            services.AddSingleton(commandsConnectionString);
+            services.AddSingleton(queriesConnectionString);
+
+            services.AddDbContext<StoreDBContext>(opt => opt.UseInMemoryDatabase(commandsConnectionString.Value), ServiceLifetime.Singleton);
+
+            services.AddSingleton<Messages>();
+
+            services.AddDepartmentHandlers();
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Info { Title = "StoreM - Departments API", Version = "v1" });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            if (env.IsDevelopment())
+            using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
             {
-                app.UseDeveloperExceptionPage();
-            }
-            else
-            {
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                app.UseHsts();
+                var context = serviceScope.ServiceProvider.GetRequiredService<StoreDBContext>();
+
+                context.Database.EnsureCreated();
             }
 
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "StoreM - Departments API V1");
+            });
+
             app.UseHttpsRedirection();
+            app.UseMiddleware<ExceptionHandler>();
             app.UseMvc();
         }
     }

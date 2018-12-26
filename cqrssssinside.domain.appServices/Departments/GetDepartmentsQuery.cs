@@ -1,16 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using cqrssssinside.domain.dto;
 using cqrssssinside.domain.infrastructure.Data;
 
-namespace cqrssssinside.domain.appServices.Employees
+namespace cqrssssinside.domain.appServices.Departments
 {
-    public class GetDepartmentsQuery:IQuery<List<DepartmentInfo>>
+    public class GetDepartmentsQuery : IQuery<List<DepartmentInfo>>
     {
-        public GetDepartmentsQuery()
-        {
-        }
     }
 
     public sealed class GetDepartmentsQueryHandler : IQueryHandler<GetDepartmentsQuery, List<DepartmentInfo>>
@@ -22,7 +18,7 @@ namespace cqrssssinside.domain.appServices.Employees
             this._storeDbContext = storeDBContext;
         }
 
-      public  List<DepartmentInfo> Handle(GetDepartmentsQuery query)
+        public List<DepartmentInfo> Handle(GetDepartmentsQuery query)
         {
             var departmentsQuery = this._storeDbContext.Departments.AsQueryable();
 

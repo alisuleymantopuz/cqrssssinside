@@ -1,4 +1,4 @@
-﻿namespace cqrssssinside.domain
+﻿namespace cqrssssinside.domain.appServices
 {
     public interface IQuery<TResult>
     {

@@ -5,26 +5,26 @@ using CSharpFunctionalExtensions;
 
 namespace cqrssssinside.domain.appServices.Employees
 {
-    public class UnregisterCommand:ICommand
+    public class UnregisterEmployeeCommand : ICommand
     {
         public long EmployeeId { get; internal set; }
 
-        public UnregisterCommand(long employeeid)
+        public UnregisterEmployeeCommand(long employeeid)
         {
             this.EmployeeId = employeeid;
         }
     }
 
-    public class UnregisterCommandHandler : ICommandHandler<UnregisterCommand>
+    public class UnregisterEmployeeCommandHandler : ICommandHandler<UnregisterEmployeeCommand>
     {
         private readonly StoreDBContext _storeDbContext;
 
-        public UnregisterCommandHandler(StoreDBContext storeDBContext)
+        public UnregisterEmployeeCommandHandler(StoreDBContext storeDBContext)
         {
             this._storeDbContext = storeDBContext;
         }
 
-        public Result Handle(UnregisterCommand command)
+        public Result Handle(UnregisterEmployeeCommand command)
         {
             var employee = this._storeDbContext.Find<Employee>(command.EmployeeId);
             if (employee == null)
