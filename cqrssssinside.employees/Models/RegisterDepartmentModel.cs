@@ -1,5 +1,5 @@
 ﻿using System;
-namespace cqrssssinside.departments.Models
+namespace cqrssssinside.employees.Models
 {
     public class RegisterDepartmentModel
     {

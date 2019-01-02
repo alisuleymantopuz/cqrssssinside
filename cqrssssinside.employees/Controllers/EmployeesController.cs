@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using cqrssssinside.domain.appServices.Departments;
 using cqrssssinside.domain.appServices.Employees;
 using cqrssssinside.domain.appServices.Utils;
 using cqrssssinside.domain.dto;
@@ -18,21 +19,64 @@ namespace cqrssssinside.employees.Controllers
         {
             _messages = messages;
         }
-        
+
+        // GET api/values
+        [HttpGet]
+        [Route("GetDepartments")]
+        [ProducesResponseType(200, Type = typeof(List<DepartmentInfo>))]
+        [ProducesResponseType(404)]
+        public IActionResult GetDepartments()
+        {
+            List<DepartmentInfo> list = _messages.Dispatch(new GetDepartmentsQuery());
+
+            return Ok(list);
+        }
+
+        // POST api/values
+        [HttpPost("RegisterDepartment")]
+        public IActionResult RegisterDepartment([FromBody]RegisterDepartmentModel registerDepartmentModel)
+        {
+            var registerDepartmentCommand = new RegisterDepartmentCommand(registerDepartmentModel.Name, registerDepartmentModel.Description);
+
+            var result = this._messages.Dispatch(registerDepartmentCommand);
+
+            return FromResult(result);
+        }
+
+        // DELETE api/values/5
+        [HttpDelete("UnregisterDepartment/{id}")]
+        public IActionResult UnregisterDepartment(long id)
+        {
+            var unregisterDepartmentCommand = new UnregisterDepartmentCommand(id);
+
+            var result = this._messages.Dispatch(unregisterDepartmentCommand);
+
+            return FromResult(result);
+        }
+
         // GET api/values
         [HttpGet("GetEmployees")]
+        [ProducesResponseType(200, Type = typeof(List<EmployeeInfo>))]
+        [ProducesResponseType(404)]
         public IActionResult GetEmployees(long? departmentId)
         {
            List<EmployeeInfo> employees = _messages.Dispatch(new GetEmployeesListQuery(departmentId));
            
-           return Ok(employees);
+            return Ok(employees);
         }
 
-        // GET api/values/5
-        [HttpGet("{id}")]
-        public ActionResult<string> Get(int id)
+        // GET api/values
+        [HttpGet("GetEmployee/{id}")]
+        [ProducesResponseType(200, Type = typeof(EmployeeInfo))]
+        [ProducesResponseType(404)]
+        public IActionResult GetEmployee(long id)
         {
-            return "value";
+            EmployeeInfo employee = _messages.Dispatch(new GetEmployeeQuery(id));
+
+            if (employee == null)
+                return NotFound();
+
+            return Ok(employee);
         }
 
         [HttpPost("ChangeDepartment")]
@@ -76,8 +120,8 @@ namespace cqrssssinside.employees.Controllers
         }
 
         // DELETE api/values/5
-        [HttpDelete("Unregister/{id}")]
-        public IActionResult Unregister(long id)
+        [HttpDelete("UnregisterEmployee/{id}")]
+        public IActionResult UnregisterEmployee(long id)
         {
             var unregisterEmployeeCommand = new UnregisterEmployeeCommand(id);
 

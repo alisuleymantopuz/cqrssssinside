@@ -38,12 +38,16 @@ namespace cqrssssinside.employees
 
             services.AddSingleton<Messages>();
 
+            services.AddDepartmentHandlers();
+
             services.AddEmployeeHandlers();
 
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new Info { Title = "StoreM - Employees API", Version = "v1" });
             });
+
+            services.AddHealthChecks();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -65,6 +69,8 @@ namespace cqrssssinside.employees
             app.UseHttpsRedirection();
             app.UseMiddleware<ExceptionHandler>();
             app.UseMvc();
+
+            app.UseHealthChecks("/healthz");
         }
     }
 }
