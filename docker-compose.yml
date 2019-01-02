@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  cqrssssinside.employees:
+    image: ${DOCKER_REGISTRY-}cqrssssinside
+    build:
+      context: .
+      dockerfile: cqrssssinside.employees/Dockerfile
