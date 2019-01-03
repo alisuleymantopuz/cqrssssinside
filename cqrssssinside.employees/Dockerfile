@@ -13,13 +13,10 @@ RUN dotnet restore cqrssssinside.employees/cqrssssinside.employees.csproj
 COPY . .
 WORKDIR /src/cqrssssinside.employees
 RUN dotnet build cqrssssinside.employees.csproj -c Release -o /app
-
 FROM build AS publish
 RUN dotnet publish cqrssssinside.employees.csproj -c Release -o /app
-
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app .
-EXPOSE 5000/tcp
-ENV ASPNETCORE_URLS http://*:5000
-ENTRYPOINT ["dotnet", "cqrssssinside.employees.dll"]
+EXPOSE 5000
+ENTRYPOINT ["dotnet", "run", "cqrssssinside.employees.dll", "--server.urls", "http://0.0.0.0:5000"]
