@@ -20,5 +20,6 @@ RUN dotnet publish cqrssssinside.employees.csproj -c Release -o /app
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app .
-EXPOSE 5000
-ENTRYPOINT ["dotnet", "run", "--server.urls", "http://0.0.0.0:5000"]
+EXPOSE 5000/tcp
+ENV ASPNETCORE_URLS http://*:5000
+ENTRYPOINT ["dotnet", "cqrssssinside.employees.dll", "--server.urls", "http://0.0.0.0:5000"]
