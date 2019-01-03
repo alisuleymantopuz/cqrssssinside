@@ -1,6 +1,5 @@
 FROM microsoft/dotnet:2.2-aspnetcore-runtime AS base
 WORKDIR /app
-EXPOSE 5000
 
 FROM microsoft/dotnet:2.2-sdk AS build
 WORKDIR /src
@@ -21,4 +20,5 @@ RUN dotnet publish cqrssssinside.employees.csproj -c Release -o /app
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app .
-ENTRYPOINT ["dotnet", "cqrssssinside.employees.dll"]
+EXPOSE 5000
+ENTRYPOINT ["dotnet", "run", "--server.urls", "http://0.0.0.0:5000"]
