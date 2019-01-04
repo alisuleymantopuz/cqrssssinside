@@ -1,5 +1,8 @@
 FROM microsoft/dotnet:2.2-aspnetcore-runtime AS base
 WORKDIR /app
+ENV ASPNETCORE_URLS="http://*:80"
+ENV ASPNETCORE_Environment="Development"
+EXPOSE 80/tcp
 
 FROM microsoft/dotnet:2.2-sdk AS build
 WORKDIR /src
@@ -13,10 +16,11 @@ RUN dotnet restore cqrssssinside.employees/cqrssssinside.employees.csproj
 COPY . .
 WORKDIR /src/cqrssssinside.employees
 RUN dotnet build cqrssssinside.employees.csproj -c Release -o /app
+
 FROM build AS publish
 RUN dotnet publish cqrssssinside.employees.csproj -c Release -o /app
+
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app .
-EXPOSE 5000
-ENTRYPOINT ["dotnet", "run", "cqrssssinside.employees.dll", "--server.urls", "http://0.0.0.0:5000"]
+ENTRYPOINT ["dotnet", "cqrssssinside.employees.dll"]
